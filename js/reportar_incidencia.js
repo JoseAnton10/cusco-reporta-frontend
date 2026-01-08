@@ -1,5 +1,7 @@
 (() => {
-  const API = "http://localhost:3000";
+  const API_URL = "https://cusco-reporta-backend.onrender.com";
+
+  fetch(`${API_URL}/api/reportar_incidencias`);
 
   const form = document.getElementById("formIncidencia");
   const msg = document.getElementById("msg");
@@ -32,14 +34,14 @@
 
       // 👇 si está logueado se envía el ID, si no → null
       usuario_id: usuario ? usuario.id : null,
-      tipo_registro: usuario ? "USUARIO" : "ANONIMO"
+      tipo_registro: usuario ? "USUARIO" : "ANONIMO",
     };
 
     try {
       const res = await fetch(`${API}/incidencias`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
 
       const json = await res.json();
@@ -53,7 +55,6 @@
       msg.textContent = "✅ Incidencia registrada correctamente";
       msg.classList.add("ok");
       form.reset();
-
     } catch (err) {
       console.error(err);
       msg.textContent = "❌ No se pudo conectar con el servidor";

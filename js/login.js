@@ -1,5 +1,7 @@
 // Frontend/js/login.js
-const API_URL = "http://localhost:3000";
+const API_URL = "https://cusco-reporta-backend.onrender.com";
+
+fetch(`${API_URL}/api/login`);
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formLogin");

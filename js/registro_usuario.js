@@ -1,4 +1,6 @@
-const API_BASE = "http://localhost:3000";
+const API_URL = "https://cusco-reporta-backend.onrender.com";
+
+fetch(`${API_URL}/api/registro_usuario`);
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formRegistro");
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       direccion: clean($("direccion").value),
       username: clean($("username").value),
       password: password,
-      rol_id: Number($("rol_id").value || 1)
+      rol_id: Number($("rol_id").value || 1),
     };
 
     // Validación real
@@ -47,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -67,12 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         window.location.href = "reportar_denuncia.html";
       }, 800);
-
     } catch (err) {
       console.error(err);
       setMsg("No se pudo conectar con el backend.", "error");
     }
   });
 });
-
-

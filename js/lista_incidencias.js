@@ -1,17 +1,25 @@
 // Frontend/js/lista_incidencias.js
-const API_BASE = "http://localhost:3000";
+const API_URL = "https://cusco-reporta-backend.onrender.com";
+
+fetch(`${API_URL}/api/lista_incidencias`);
 
 const $ = (id) => document.getElementById(id);
 
 function safeJson(text) {
-  try { return JSON.parse(text); } catch { return null; }
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
 }
 
 function getSession() {
   const token = localStorage.getItem("token");
   const userRaw = localStorage.getItem("user");
   let user = null;
-  try { user = userRaw ? JSON.parse(userRaw) : null; } catch {}
+  try {
+    user = userRaw ? JSON.parse(userRaw) : null;
+  } catch {}
   return { token, user };
 }
 
@@ -49,7 +57,9 @@ function badgeEstado(inc) {
   if (codigo === "SOLUCIONADO" || nombre.includes("soluc")) {
     return `<span class="status-badge status-solucionado">Solucionado</span>`;
   }
-  return `<span class="status-badge status-reporte">${inc.estado_nombre || "—"}</span>`;
+  return `<span class="status-badge status-reporte">${
+    inc.estado_nombre || "—"
+  }</span>`;
 }
 
 function pintarSesionUI() {
@@ -58,15 +68,12 @@ function pintarSesionUI() {
   const rolEl = $("rolUsuario");
 
   if (token && user) {
-    const nombre =
-      user.nombre_completo ||
-      user.username ||
-      "Usuario";
+    const nombre = user.nombre_completo || user.username || "Usuario";
 
     if (nombreEl) nombreEl.textContent = nombre;
 
     // Ajusta según tu BD (si rol_id=2 admin)
-    const rol = (user.rol_id === 2) ? "Administrador" : "Ciudadano";
+    const rol = user.rol_id === 2 ? "Administrador" : "Ciudadano";
     if (rolEl) rolEl.textContent = rol;
 
     setEstadoCarga("Sesión identificada", "ok");
@@ -87,7 +94,9 @@ async function fetchIncidencias() {
   if (hasta) params.set("hasta", hasta);
   if (estado && estado !== "todos") params.set("estado", estado);
 
-  const url = `${API_BASE}/incidencias${params.toString() ? "?" + params.toString() : ""}`;
+  const url = `${API_BASE}/incidencias${
+    params.toString() ? "?" + params.toString() : ""
+  }`;
 
   const { token } = getSession();
 
@@ -123,19 +132,20 @@ function renderTabla(incidencias) {
     return;
   }
 
-  tbody.innerHTML = incidencias.map((inc) => {
-    const id = inc.id ?? "—";
-    const fecha = formatFecha(inc.fecha_incidente);
-    const tipo = inc.tipo_registro || "—";
-    const categoria = inc.categoria || "—";
-    const titulo = inc.titulo || "—";
-    const ubicacion =
-      (inc.referencia_lugar ? `${inc.referencia_lugar}` : "") +
-      (inc.distrito ? ` / ${inc.distrito}` : "") +
-      (inc.provincia ? ` / ${inc.provincia}` : "") +
-      (inc.departamento ? ` / ${inc.departamento}` : "");
+  tbody.innerHTML = incidencias
+    .map((inc) => {
+      const id = inc.id ?? "—";
+      const fecha = formatFecha(inc.fecha_incidente);
+      const tipo = inc.tipo_registro || "—";
+      const categoria = inc.categoria || "—";
+      const titulo = inc.titulo || "—";
+      const ubicacion =
+        (inc.referencia_lugar ? `${inc.referencia_lugar}` : "") +
+        (inc.distrito ? ` / ${inc.distrito}` : "") +
+        (inc.provincia ? ` / ${inc.provincia}` : "") +
+        (inc.departamento ? ` / ${inc.departamento}` : "");
 
-    return `
+      return `
       <tr>
         <td>${id}</td>
         <td>${fecha}</td>
@@ -147,13 +157,14 @@ function renderTabla(incidencias) {
         <td><button class="link-btn" data-id="${id}">Ver</button></td>
       </tr>
     `;
-  }).join("");
+    })
+    .join("");
 
   // click handlers de "Ver"
   tbody.querySelectorAll("button.link-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = btn.getAttribute("data-id");
-      const inc = incidencias.find(x => String(x.id) === String(id));
+      const inc = incidencias.find((x) => String(x.id) === String(id));
       if (inc) openModal(inc);
     });
   });
@@ -282,5 +293,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })();
 });
-
-

@@ -1,4 +1,6 @@
-const API_BASE = "http://localhost:3000";
+const API_URL = "https://cusco-reporta-backend.onrender.com";
+
+fetch(`${API_URL}/api/reportar_denuncia`);
 const $ = (id) => document.getElementById(id);
 
 // =================== UI MENSAJES ===================
@@ -16,7 +18,9 @@ function getSession() {
   try {
     user = JSON.parse(localStorage.getItem("user") || "null");
   } catch {}
-  const modo = localStorage.getItem("modo_denuncia") || (token ? "identificado" : "incognito");
+  const modo =
+    localStorage.getItem("modo_denuncia") ||
+    (token ? "identificado" : "incognito");
   return { token, user, modo };
 }
 
@@ -32,7 +36,8 @@ function pintarSesionUI() {
   if (token && user && modo === "identificado") {
     const name = user.nombre_completo || user.username || "Usuario";
     if (nombreEl) nombreEl.textContent = name;
-    if (rolEl) rolEl.textContent = user.rol_id === 2 ? "Administrador" : "Ciudadano";
+    if (rolEl)
+      rolEl.textContent = user.rol_id === 2 ? "Administrador" : "Ciudadano";
     if (pillModo) pillModo.textContent = "Modo: Identificado";
     if (pillUser) pillUser.textContent = `Usuario: ${name}`;
     if (modoBadge) {
@@ -80,10 +85,12 @@ function fmtFecha(fecha) {
 
 function limpiarFormulario() {
   if ($("fecha_incidente")) $("fecha_incidente").value = hoyISO();
-  ["placa", "titulo", "referencia_lugar", "distrito", "descripcion"].forEach((id) => {
-    const el = $(id);
-    if (el) el.value = "";
-  });
+  ["placa", "titulo", "referencia_lugar", "distrito", "descripcion"].forEach(
+    (id) => {
+      const el = $(id);
+      if (el) el.value = "";
+    }
+  );
   if ($("categoria_id")) $("categoria_id").value = "";
   if ($("departamento")) $("departamento").value = "Cusco";
   if ($("provincia")) $("provincia").value = "Cusco";
@@ -153,7 +160,10 @@ async function enviarIncidencia(e) {
     }, 600);
   } catch (err) {
     console.error(err);
-    setMsg("❌ No se pudo conectar con el backend. Verifica http://localhost:3000", "error");
+    setMsg(
+      "❌ No se pudo conectar con el backend. Verifica http://localhost:3000",
+      "error"
+    );
   }
 }
 
@@ -175,7 +185,9 @@ async function consultarPlaca() {
   out.textContent = "Consultando...";
 
   try {
-    const res = await fetch(`${API_BASE}/incidencias/placa/${encodeURIComponent(placa)}`);
+    const res = await fetch(
+      `${API_BASE}/incidencias/placa/${encodeURIComponent(placa)}`
+    );
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok || !data.ok) {
@@ -194,11 +206,15 @@ async function consultarPlaca() {
     out.innerHTML = `
       <div style="text-align:center; font-weight:900; margin-bottom:8px;">
         🚨 <span style="color:#b00020;">PLACA REPORTADA</span><br>
-        <div style="margin-top:4px;">Placa: <b>${escapeHtml(data.placa)}</b> — Registros: <b>${data.total}</b></div>
+        <div style="margin-top:4px;">Placa: <b>${escapeHtml(
+          data.placa
+        )}</b> — Registros: <b>${data.total}</b></div>
       </div>
 
       <div style="display:grid; gap:10px; margin-top:10px;">
-        ${data.incidencias.map((it) => `
+        ${data.incidencias
+          .map(
+            (it) => `
           <div style="border:1px solid #eee; border-radius:12px; padding:12px; background:#fff;">
             <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
               <div style="font-weight:900; color:#8b0000;">
@@ -210,14 +226,22 @@ async function consultarPlaca() {
             </div>
 
             <div style="margin-top:6px; color:#333;">
-              <b>Categoría:</b> ${escapeHtml(it.categoria || "—")} &nbsp; | &nbsp;
-              <b>Estado:</b> ${escapeHtml(it.estado_nombre || it.estado_codigo || "—")} &nbsp; | &nbsp;
+              <b>Categoría:</b> ${escapeHtml(
+                it.categoria || "—"
+              )} &nbsp; | &nbsp;
+              <b>Estado:</b> ${escapeHtml(
+                it.estado_nombre || it.estado_codigo || "—"
+              )} &nbsp; | &nbsp;
               <b>Tipo:</b> ${escapeHtml(it.tipo_registro || "—")}
             </div>
 
             <div style="margin-top:6px; color:#333;">
-              <b>Ubicación:</b> ${escapeHtml(it.referencia_lugar || "—")} — ${escapeHtml(it.distrito || "—")}
-              (${escapeHtml(it.departamento || "—")}/${escapeHtml(it.provincia || "—")})
+              <b>Ubicación:</b> ${escapeHtml(
+                it.referencia_lugar || "—"
+              )} — ${escapeHtml(it.distrito || "—")}
+              (${escapeHtml(it.departamento || "—")}/${escapeHtml(
+              it.provincia || "—"
+            )})
             </div>
 
             <div style="margin-top:6px; color:#555;">
@@ -228,7 +252,9 @@ async function consultarPlaca() {
               <b>Coords:</b> ${it.latitud ?? "—"}, ${it.longitud ?? "—"}
             </div>
           </div>
-        `).join("")}
+        `
+          )
+          .join("")}
       </div>
     `;
   } catch (err) {
@@ -243,7 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
   pintarSesionUI();
 
   // fecha por defecto
-  if ($("fecha_incidente") && !$("fecha_incidente").value) $("fecha_incidente").value = hoyISO();
+  if ($("fecha_incidente") && !$("fecha_incidente").value)
+    $("fecha_incidente").value = hoyISO();
 
   // listeners
   $("formInc")?.addEventListener("submit", enviarIncidencia);
@@ -259,8 +286,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("btnConsultarPlaca")?.addEventListener("click", consultarPlaca);
 });
-
-
-
-
-
