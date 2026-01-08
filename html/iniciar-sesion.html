@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Cusco Reporta</title>
+
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: "Poppins", sans-serif; }
+    .page-wrap{
+      min-height: calc(100vh - 80px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 40px 16px;
+      background: radial-gradient(circle at top, #7b0000 0%, #3b0000 60%, #1c0000 100%);
+    }
+    .auth-card{
+      width: min(920px, 96vw);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      padding: 26px 22px 22px;
+    }
+    .auth-header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 10px;
+      text-align:center;
+      margin-bottom: 18px;
+    }
+    .auth-header img{
+      height: 48px;
+      object-fit: contain;
+    }
+    .auth-header h1{
+      margin: 0;
+      color: #8b0000;
+      font-size: 1.55rem;
+      letter-spacing: .5px;
+    }
+    .auth-header p{
+      margin: 0;
+      color:#555;
+      font-size: .95rem;
+    }
+
+    .toggle-row{
+      display:flex;
+      justify-content:center;
+      margin: 18px 0 22px;
+    }
+    .toggle{
+      display:flex;
+      border-radius: 999px;
+      overflow:hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    }
+    .toggle a{
+      padding: 10px 18px;
+      text-decoration:none;
+      font-weight: 700;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#c43d3d;
+      opacity:.9;
+    }
+    .toggle a.active{
+      background:#8b0000;
+      opacity: 1;
+    }
+
+    .form{
+      width: min(420px, 100%);
+      margin: 0 auto;
+    }
+    .form-group{ margin-bottom: 16px; }
+    .form-label{
+      display:block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color:#333;
+    }
+    .form-input{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #ddd;
+      background: #f8f9fa;
+      outline: none;
+      font-weight: 600;
+    }
+    .form-input:focus{
+      border-color:#8b0000;
+      background:#fff;
+    }
+    .submit-btn{
+      width:100%;
+      border:none;
+      background:#8b0000;
+      color:#fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .05s ease;
+    }
+    .submit-btn:active{ transform: scale(.99); }
+
+    .links{
+      display:flex;
+      justify-content:center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .links a{
+      color:#8b0000;
+      text-decoration:none;
+      font-weight:700;
+    }
+
+    .footer-msg{
+      text-align:center;
+      margin-top: 18px;
+      color:#666;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    @media (max-width: 600px){
+      .auth-card{ padding: 20px 16px 18px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR (usa tu estilo existente si ya lo tienes en styles.css) -->
+  <header class="navbar">
+    <div class="navbar__left" style="display:flex; align-items:center; gap:10px;">
+      <img src="../assents/images/CuscoReporta.png" alt="Logo Cusco Reporta" class="navbar__logo">
+    </div>
+
+    <nav class="navbar__menu">
+      <a href="index.html">Inicio</a>
+      <a href="registrar_tu_denuncia.html">Registra tu denuncia</a>
+      <a href="sobre_nosotros.html">Sobre nosotros</a>
+      <a href="iniciar-sesion.html" class="active">Iniciar Sesión</a>
+      <a href="ayuda.html">Ayuda</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="auth-card">
+      <div class="auth-header">
+        <img src="../assents/images/CuscoReporta.png" alt="Cusco Reporta">
+        <h1>INICIO DE SESIÓN</h1>
+        <p>Ingresa con tu usuario o correo para acceder al panel.</p>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle">
+          <a href="Registro_Usuario.html">🏬 Registrarse</a>
+        </div>
+      </div>
+
+      <form id="formLogin" class="form">
+        <div class="form-group">
+          <label for="username" class="form-label">Nombre de Usuario o Email</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            placeholder="usuario@ejemplo.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <button type="submit" class="submit-btn">🔐 Iniciar Sesión</button>
+
+        <div class="links">
+          <a href="recuperar_contrasena.html">Recuperar contraseña</a>
+          <a href="index.html">← Volver al inicio</a>
+        </div>
+      </form>
+
+      <div class="footer-msg">¡CONFÍA EN NOSOTROS!</div>
+    </section>
+  </main>
+
+  <!-- JS real de login (backend) -->
+  <script src="../js/login.js"></script>
+</body>
+</html>
